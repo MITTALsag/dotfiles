@@ -1,0 +1,18 @@
+try_run()
+{
+    COMMAND=$1
+    shift
+    ARGS=$@
+    command -v $COMMAND &> /dev/null && $COMMAND $ARGS&
+
+}
+
+try_run xset s off
+try_run picom -b
+try_run nm-applet
+try_run mate-power-manager
+try_run mate-volume-control-status-icon
+try_run redshift-gtk
+try_run lxqt-policykit-agent
+try_run 1password
+try_run blueman-applet
