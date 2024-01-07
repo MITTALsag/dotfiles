@@ -43,46 +43,52 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Bag of mappings
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
-Plug 'scrooloose/nerdcommenter'
-Plug 'romainl/vim-qf'
-
-" Snippets (don't really use them, but eh)
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
-" Navigation
-Plug 'tpope/vim-vinegar'
-Plug 'ctrlpvim/ctrlp.vim' " TODO: I don't really use that anymore.
-Plug 'mileszs/ack.vim'
-
-" Theming
+" " Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-repeat'
+" Plug 'tpope/vim-unimpaired'
+" Plug 'scrooloose/nerdcommenter'
+" Plug 'romainl/vim-qf'
+" 
+" " Snippets (don't really use them, but eh)
+" Plug 'SirVer/ultisnips'
+" Plug 'honza/vim-snippets'
+" 
+" " Navigation
+" Plug 'tpope/vim-vinegar'
+" Plug 'ctrlpvim/ctrlp.vim' " TODO: I don't really use that anymore.
+" Plug 'mileszs/ack.vim'
+" 
+" " Theming
 Plug 'nanotech/jellybeans.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" Filetype specific plugins
-Plug 'pearofducks/ansible-vim'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'vim-pandoc/vim-pandoc'
-Plug '5long/pytest-vim-compiler'
-Plug 'hashivim/vim-terraform'
-Plug 'rust-lang/rust.vim'
-
-" Tag management
-Plug 'ludovicchabant/vim-gutentags'
-
-" 'IDE' features
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
-Plug 'janko/vim-test'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+" 
+" " Filetype specific plugins
+" Plug 'pearofducks/ansible-vim'
+" Plug 'vim-pandoc/vim-pandoc-syntax'
+" Plug 'vim-pandoc/vim-pandoc'
+" Plug '5long/pytest-vim-compiler'
+" Plug 'hashivim/vim-terraform'
+" Plug 'rust-lang/rust.vim'
+" 
+" " Tag management
+" Plug 'ludovicchabant/vim-gutentags'
+" 
+" " 'IDE' features
+" Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-dispatch'
+" Plug 'janko/vim-test'
 
 call plug#end()
 
 " Enable filetype detection for plugins and indentation options
 filetype plugin indent on
+
+" Source the vimrc file after saving it
+if has("autocmd")
+  autocmd bufwritepost .vimrc source $MYVIMRC
+endif
+
 
 " Reload a file when it is changed from the outside
 set autoread
@@ -124,7 +130,7 @@ if has('termguicolors') && &termguicolors
 endif
 
 " Feel free to switch to another colorscheme
-colorscheme jellybeans
+colorscheme jellybeans 
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -179,7 +185,7 @@ set fillchars=vert:│
 syntax on
 
 " Enable Doxygen highlighting
-let g:load_doxygen_syntax=1
+" let g:load_doxygen_syntax=1
 
 " Allow mouse use in vim
 set mouse=a
@@ -188,7 +194,7 @@ set mouse=a
 set showmatch
 
 " Enable line wrapping
-set wrap
+" set wrap
 
 " Wrap on column 80
 set textwidth=79
@@ -240,6 +246,7 @@ set smarttab
 " Set basic indenting (i.e. copy the indentation of the previous line)
 " When filetype detection didn't find a fancy indentation scheme
 set autoindent
+set copyindent
 
 " This one is complicated. See :help cinoptions-values for details
 set cinoptions=(0,u0,U0,t0,g0,N-s
@@ -251,18 +258,20 @@ set cinoptions=(0,u0,U0,t0,g0,N-s
 " Set "," as map leader
 let mapleader = ","
 
+nmap <leader>v :tabedit $MYVIMRC<CR>
+
 " Toggle paste mode
 noremap <leader>pp :setlocal paste!<cr>
 
 " Move between rows in wrapped lines
-noremap j gj
-noremap k gk
+" noremap j gj
+" noremap k gk
 
 " Yank from cursor to end of line, to be consistent with C and D
 nnoremap Y y$
 
 " Write as root, when you forgot to sudoedit
-cnoreabbrev w!! w !sudo tee % >/dev/null
+" cnoreabbrev w!! w !sudo tee % >/dev/null
 
 " map ; to :
 noremap ; :
@@ -272,61 +281,62 @@ noremap ; :
 noremap <leader>cw :botright :cw<cr>
 
 " Run make silently, then skip the 'Press ENTER to continue'
-noremap <leader>m :silent! :make! \| :redraw!<cr>
+nnoremap <leader>m :silent make\|redraw!\|:cw<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Persistence options
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-" Set location of the viminfo file
-set viminfo='20,\"50,<100,n~/.vimtmp/viminfo
+" " Set location of the viminfo file
 
-" See :h last-position-jump
-augroup last_position_jump
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-augroup END
-
-" Persistent undo
-if version >= 703
-    set undofile
-    set undodir=~/.vimtmp/undo
-    silent !mkdir -p ~/.vimtmp/undo
-endif
+" set viminfo='20,\"50,<100,n~/.vimtmp/viminfo
+" 
+" " See :h last-position-jump
+" augroup last_position_jump
+"     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+" augroup END
+" 
+" " Persistent undo
+" if version >= 703
+"     set undofile
+"     set undodir=~/.vimtmp/undo
+"     silent !mkdir -p ~/.vimtmp/undo
+" endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin mappings and options
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 
-" Disable Ack.vim's mappings on the quickfix and location list windows
-" We use vim-qf mappings instead
-let g:ack_apply_qmappings = 0
-let g:ack_apply_lmappings = 0
-let g:qf_mapping_ack_style = 1
-
-" Override unimpaired quickfix and loc-list mappings to use vim-qf wrapparound
-let g:nremap = {"[q": "", "]q": "", "[l": "", "]l": ""}
-nmap [q <Plug>(qf_qf_previous)
-nmap ]q <Plug>(qf_qf_next)
-nmap [l <Plug>(qf_loc_previous)
-nmap ]l <Plug>(qf_loc_next)
-
-" Launch fugitive's gstatus
-noremap <leader>gs :Gstatus<cr>
-
-" Mappings for vim-test
-nmap <silent> <leader>ts :TestSuite<cr>
-
-" Tell vim-test to use dispatch to run our tests
-let test#strategy = "dispatch"
-
-" Tell Dispatch to use the pytest compiler when we call pytest (the compiler
-" file looks for py.test instead of pytest)
-let g:dispatch_compilers = {'pytest': 'pytest'}
+" " Disable Ack.vim's mappings on the quickfix and location list windows
+" " We use vim-qf mappings instead
+" let g:ack_apply_qmappings = 0
+" let g:ack_apply_lmappings = 0
+" let g:qf_mapping_ack_style = 1
+" 
+" " Override unimpaired quickfix and loc-list mappings to use vim-qf wrapparound
+" let g:nremap = {"[q": "", "]q": "", "[l": "", "]l": ""}
+" nmap [q <Plug>(qf_qf_previous)
+" nmap ]q <Plug>(qf_qf_next)
+" nmap [l <Plug>(qf_loc_previous)
+" nmap ]l <Plug>(qf_loc_next)
+" 
+" " Launch fugitive's gstatus
+" noremap <leader>gs :Gstatus<cr>
+" 
+" " Mappings for vim-test
+" nmap <silent> <leader>ts :TestSuite<cr>
+" 
+" " Tell vim-test to use dispatch to run our tests
+" let test#strategy = "dispatch"
+" 
+" " Tell Dispatch to use the pytest compiler when we call pytest (the compiler
+" " file looks for py.test instead of pytest)
+" let g:dispatch_compilers = {'pytest': 'pytest'}
 
 " Add the termdebug built-in plugin
 if version >= 801
     packadd termdebug
 endif
 
-let g:rustfmt_autosave = 1
+"let g:rustfmt_autosave = 1
