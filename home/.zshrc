@@ -8,4 +8,4 @@ LS_COLORS='no=0:fi=33:ex=1:di=1;32:ln=36:or=1;40:mi=1;40:pi=31:so=33:bd=44;37:cd
 export LS_COLORS
 
 alias ls='ls --color=auto'
-alias COUR='cd ~/Desktop/SAGAR_MITTAL/SAGAR_MITTAL_2023_2024'
+alias cour='cd ~/Desktop/SAGAR_MITTAL/SAGAR_MITTAL_2023_2024'
